@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Demo</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script>
+			function fetchVersions() {
+			  var channel = document.getElementById("channel").value;
+			  var xhr = new XMLHttpRequest();
+			  xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+				  if (xhr.status === 200) {
+					var xmlDoc = xhr.responseXML;
+					var versions = xmlDoc.getElementsByTagName("version");
+					var latestVersion = xmlDoc.getElementsByTagName("latest")[0].textContent;
+					var selectOptions = "";
+					for (var i = 0; i < versions.length; i++) {
+					  var version = versions[i].textContent;
+					  selectOptions += "<option value='" + version + "'>" + version + "</option>";
+					}
+					document.getElementById("version").innerHTML = selectOptions;
+					document.getElementById("latest-version").textContent = latestVersion;
+					document.getElementById("confirm-button").disabled = false;
+				  } else {
+					console.error("Error fetching versions: " + xhr.status);
+				  }
+				}
+			  };
+			  xhr.open("GET", "https://mc.uerr.cn/maven2/org/glavo/hmcl/hmcl-" + channel + "/maven-metadata.xml", true);
+			  xhr.send();
+			}
+		
+			function generateDownloadLinks() {
+			  var channel = document.getElementById("channel").value;
+			  var version = document.getElementById("version").value;
+			  var options = document.getElementById("options").value;
+			  var latestVersion = document.getElementById("latest-version").textContent;
+			  var downloadUrl = "https://api.yokinanya.icu/hmcl/" + channel + "/" + version + "/" + options;
+			  var latestDownloadUrl = "https://api.yokinanya.icu/hmcl/" + channel + "/" + latestVersion + "/" + options;
+			  var downloadLinks = "<ul class='actions'><li><a href='" + downloadUrl + "' class='button' target='_blank'>Download (Version: " + version + ")</a></li></ul>" +
+								  "<ul class='actions'><li><a href='" + latestDownloadUrl + "' class='button' target='_blank'>Download (Latest Version)</li></ul>";
+			  document.getElementById("download-links").innerHTML = downloadLinks;
+			}
+		
+			function getUUID() {
+			  var nickname = document.getElementById("nickname").value;
+			  var xhr = new XMLHttpRequest();
+			  xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+				  if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					var uuid = response.uuid;
+					var splitteduuid = response.splitteduuid;
+					var offlineuuid = response.offlineuuid;
+					var offlinesplitteduuid = response.offlinesplitteduuid;
+					var uuidOutput = "";
+					if (uuid && splitteduuid) {
+					  uuidOutput += "Online UUID: " + uuid + "<br>";
+					  uuidOutput += "Online Splitted UUID: " + splitteduuid;
+					}
+					if (offlineuuid && offlinesplitteduuid) {
+					  if (uuid && splitteduuid) {
+						uuidOutput += "<br><br>";
+					  }
+					  uuidOutput += "Offline UUID: " + offlineuuid + "<br>";
+					  uuidOutput += "Offline Splitted UUID: " + offlinesplitteduuid;
+					}
+					document.getElementById("uuid-output").innerHTML = uuidOutput;
+				  } else {
+					console.error("Error fetching UUID: " + xhr.status);
+				  }
+				}
+			  };
+			  xhr.open("GET", "https://api.yokinanya.icu/mcuuid/" + nickname, true);
+			  xhr.send();
+			}
+		
+			window.onload = function() {
+			  document.getElementById("channel").value = "stable"; // 设置通道的默认值为Stable
+			  fetchVersions(); // 获取版本列表
+			};
+		  </script>
+	</head>
+	<body class="is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<h1 id="logo"><a href="index.html">HMCL Mirror</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="https://github.com/Sh1n3zZ/HMCLMirror">Github</a></li>
+						<li><a href="versions.html">More Versions</a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style1">
+					<div class="container">
+						<header class="major">
+							<h2>Versions</h2>
+							<p>Choose the Hello Minecraft you need! Launcher and download.</p>
+						</header>
+						<div class="row gtr-150">
+							<div class="col-4 col-12-medium">
+
+								<!-- Sidebar -->
+									<section id="sidebar">
+										<section>
+											<h3>HMCL Mirror Download</h3>
+											<label for="channel">Channel:</label>
+											<select id="channel" onchange="fetchVersions()">
+												<option value="dev">Dev</option>
+												<option value="stable">Stable</option>
+											</select>
+											<br>
+											<label for="version">Version:</label>
+											<select id="version"></select>
+											<br>
+											<label for="options">Options:</label>
+											<select id="options">
+											  <option value="json">JSON</option>
+											  <option value="jar">JAR</option>
+											  <option value="exe">EXE</option>
+											</select>
+											<p>Latest Version: <span id="latest-version"></span></p>
+											<br>
+											<footer>
+												<ul class="actions">
+													<li><button class="button" id="confirm-button" onclick="generateDownloadLinks()" disabled>Get Link</button></li>
+												</ul>
+												<div id="download-links"></div>
+											</footer>
+										</section>
+										<hr />
+										<section>
+											<pre><code>
+												<div id="uuid-output">Please Get Your UUID First.</div>
+											</code></pre>
+											<h3>NickName to UUID</h3>
+											<label for="nickname">Nickname:</label>
+											<input type="text" id="nickname">
+											<br>
+											<footer>
+												<ul class="actions">
+													<button class="button" onclick="getUUID()">Get UUID</button>
+												</ul>
+											</footer>
+										</section>
+									</section>
+
+							</div>
+							<div class="col-8 col-12-medium imp-medium">
+
+								<!-- Content -->
+									<section id="content">
+										<a href="#" class="image fit"><img src="images/bann.png" alt="" /></a>
+										<h3>About HMCL Mirror</h3>
+										<h4>About our open source address</h4>
+										<p>Backend interface : <a href="https://github.com/yokinanya/LuoYu7Api">https://github.com/yokinanya/LuoYu7Api</a>
+										<br>Front-end : <a href="https://github.com/Sh1n3zZ/HMCLMirror">https://github.com/Sh1n3zZ/HMCLMirror</a></p>
+										<h4>Why do you want to create this mirror station?</h4>
+										<p>Because of c*file.</p>
+									</section>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/Sh1n3zZ/HMCLMirror" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="mailto:dengjunhai@foxmail.com" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>本项目与HMCL无任何联系，非从属、非官方项目。</li>
+					<li>&copy; <a href="https://log.lightxi.com/">Sh1n3zZ</a> .  All rights reserved .</li>
+					<br><br>
+					-"There is no justice in following unjust laws".
+				</ul>
+			</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Landed by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<script>
+			// 获取某个Channel下的Latest版本号和下载地址
+			function getLatestVersionsByChannel(channel) {
+			  const channelDiv = document.getElementById(channel);
+			  const channelList = channelDiv.querySelector("ul");
+			  
+			  const options = ["jar", "exe"];
+		
+			  for (let i = 0; i < options.length; i++) {
+				const option = options[i];
+		
+				const url = `https://mc.uerr.cn/maven2/org/glavo/hmcl/hmcl-${channel}/maven-metadata.xml`;
+		
+				fetch(url)
+				  .then(response => response.text())
+				  .then(data => {
+					const parser = new DOMParser();
+					const xmlDoc = parser.parseFromString(data, "text/xml");
+		
+					const latestVersion = xmlDoc.getElementsByTagName("latest")[0].textContent;
+		
+					const downloadUrl = `https://api.yokinanya.icu/hmcl/${channel}/${latestVersion}/${option}`;
+		
+					const listItem = document.createElement("li");
+					listItem.innerHTML = `Option: ${option}, Latest Version: ${latestVersion} <a href="${downloadUrl}" target="_blank">下载</a>`;
+		
+					channelList.appendChild(listItem);
+				  })
+				  .catch(error => {
+					console.log("Error:", error);
+				  });
+			  }
+			}
+		
+			// 获取所有Channels的Latest版本号和下载地址
+			function getLatestVersions() {
+			  const channels = ["dev", "stable"];
+		
+			  for (let i = 0; i < channels.length; i++) {
+				const channel = channels[i];
+				getLatestVersionsByChannel(channel);
+			  }
+			}
+		
+			// 页面加载完成后获取最新版本
+			window.onload = getLatestVersions;
+		</script>
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload landing">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="index.html">HMCL Mirror</a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="https://github.com/Sh1n3zZ/HMCLMirror">Github</a></li>
+							<li><a href="versions.html">More Versions</a></li>
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h2>Hello Minecraft! Launcher</h2>
+							<p>第三方镜像源 - Simpler, Faster, and More Convenient.</p>
+							<p>Visit <a href="https://github.com/Sh1n3zZ/HMCLMirror">Project on Github</a> to learn more.</p>
+						</header>
+						<span class="image"><img src="images/logo.png" alt="" /></span>
+					</div>
+					<a href="#one" class="goto-next scrolly">Next</a>
+				</section>
+
+			<!-- One -->
+				<section id="one" class="spotlight style1 bottom">
+					<span class="image fit main"><img src="images/bann.png" alt="" /></span>
+					<div class="content">
+						<div class="container">
+							<div class="row">
+								<div class="col-4 col-12-medium">
+									<header>
+										<h2>HMCL Mirror</h2>
+										<p>Select and download the Latest version you need. <a href="versions.html">Need a historical version?</a></p>
+									</header>
+								</div>
+								<div class="col-4 col-12-medium">
+									<div id="dev">
+										<h3>Channel: Dev</h3>
+										<ul></ul>
+									</div>
+								</div>
+								<div class="col-4 col-12-medium">
+									<div id="stable">
+										<h3>Channel: Stable</h3>
+										<ul></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href="#footer" class="goto-next scrolly">Next</a>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="icons">
+						<li><a href="https://github.com/Sh1n3zZ/HMCLMirror" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="mailto:dengjunhai@foxmail.com" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>本项目与HMCL无任何联系，非从属、非官方项目。</li>
+						<li>&copy; <a href="https://log.lightxi.com/">Sh1n3zZ</a> .  All rights reserved .</li>
+						<br><br>
+						-"There is no justice in following unjust laws".
+					</ul>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
