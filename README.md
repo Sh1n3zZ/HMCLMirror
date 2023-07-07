@@ -11,11 +11,11 @@ Hello Minecraft! Launcher image download station front-end program, which is sim
 
 ## About our open source address
 ### Backend interface : https://github.com/yokinanya/LuoYu7Api
-### Front-end : https://github.com/Sh1n3zZ/HMCLMirror（This repo）
+### Front-end : [https://github.com/Sh1n3zZ/HMCLMirror](https://github.com/Sh1n3zZ/HMCLMirror)(This repo)
 
 ## Why do you want to create this mirror station?
 Because of c*file.
 
 ## What can HMCLMirror do?
-1.Faster and more convenient access to Hello Minecraft! Launcher
+1.Faster and more convenient access to Hello Minecraft! Launcher  
 2.Obtain your UUID based on NickName
